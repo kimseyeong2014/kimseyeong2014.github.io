@@ -1,2 +1,436 @@
-<head><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9212488803476854"
-     crossorigin="anonymous"></script></head>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAM1BMVEVHcEz/AAD/AAD/BQD/GwD/MQD/9QDd/yOy/03/4ACT/2xo/5f/wgAz/80B////kQD/XQB4LdJ7AAAABnRSTlMAF1uNwPOmyTibAAAAqUlEQVR42r2TSw4EIQhER21AerTh/qcdMcaYdhJ2vm1VKOXzOUxMVyPF/2pIoCoNVUhh1yOoFMYGF1HYqqQmIw2wWdKmM1HOdyNnIn45ogqa/O2YBUWXlADCZHLtmIVYICwBxfRan06t5ihLCFhA16fDQmC+YBR4JqNEnAlMuesTK8Ez4xKk+224CeU6YHAf6X7Ta5Tfan9Y/rj9hfFXzl9af+33wzl8rz+5QxYpNbP30QAAAABJRU5ErkJggg==">
+    <title>풍선 터트리기</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            touch-action: manipulation;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+        canvas {
+            background-color: white;
+            cursor: crosshair;
+        }
+
+        #ui-overlay {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            width: 800px;
+            height: 600px;
+        }
+        #ui-overlay > * {
+            pointer-events: auto;
+        }
+        h1 {
+            margin: 0 0 20px 0;
+            font-size: 48px;
+            color: #333;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 24px;
+            font-family: 'Arial', sans-serif;
+            cursor: pointer;
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            transition: transform 0.2s, background-color 0.2s;
+            margin-top: 10px;
+        }
+        button:hover {
+            transform: scale(1.1);
+            background-color: #ff6b81;
+        }
+
+        #homeBtn, #downloadBtn {
+            background-color: #2f3542;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 20px;
+            width: 120px;
+        }
+
+        .result-button-container {
+            position: absolute;
+            top: 10px;
+            right: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        #downloadBtn {
+            background-color: #2ed573;
+            pointer-events: auto;
+        }
+        #downloadBtn:hover {
+            background-color: #7bed9f;
+        }
+
+        .button-group {
+            margin-top: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<div id="ui-overlay">
+    <h1 id="gameTitle">풍선 터트리기</h1>
+    <button id="startBtn">게임 시작</button>
+    
+    <div class="result-button-container">
+        <button id="homeBtn" class="hidden">처음으로</button> 
+        <button id="downloadBtn" class="hidden">결과 받기</button>
+    </div>
+    
+    <div id="endButtons" class="button-group hidden">
+        <button id="showResultBtn">결과 보기</button>
+    </div>
+</div>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const startBtn = document.getElementById('startBtn');
+    const showResultBtn = document.getElementById('showResultBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const homeBtn = document.getElementById('homeBtn');
+    const endButtons = document.getElementById('endButtons');
+    const gameTitle = document.getElementById('gameTitle');
+
+    const popSound = new Audio('https://assets.scratch.mit.edu/83a9787d4cb6f3b7632b4ddfebf74367.wav');
+    const tickSound = new Audio('https://playentry.org/uploads/71/ef/71efd3bcf64d5f497468c504782f050b.mp3');
+    const readySound = new Audio('https://playentry.org/uploads/86/90/869085e89addb473a0799c70de94d280.mp3');
+    const startSound = new Audio('https://playentry.org/uploads/43/4c/434cc2c4ac17bbce41b7fba12ee50d7b.mp3');
+ 
+    const qrImage = new Image();
+    qrImage.crossOrigin = "anonymous";
+    qrImage.src = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=http://풍선터트리기.kro.kr";
+
+    let score = 0;
+    let startTime = 0;
+    let balloons = [];
+    let floatingTexts = [];
+    let lastSpawnTime = 0;
+    let isGameRunning = false;
+    let isCountingDown = false;
+    let isStarting = false;
+    let isShowingResult = false;
+    let userName = "";
+    let countdownValue = 0;
+    let startCountdownValue = 3;
+    const GAME_DURATION = 60000;
+
+    const BALLOON_CONF = {
+        "+1": { effect: 1, color: "red" },
+        "+2": { effect: 2, color: "cyan" },
+        "+3": { effect: 3, color: "yellow" },
+        "-2": { effect: -2, color: "lime" },
+        "×2": { effect: "double", color: "rainbow" },
+        "÷2": { effect: "half", color: "black" },
+        "?": { effect: "random", color: "fuchsia" }
+    };
+
+    class FloatingText {
+        constructor(x, y, text, color) {
+            this.x = x;
+            this.y = y;
+            this.text = text;
+            this.color = color;
+            this.life = 40;
+        }
+        draw() {
+            ctx.globalAlpha = this.life / 40;
+            ctx.fillStyle = this.color;
+            ctx.font = "bold 30px Arial";
+            ctx.fillText(this.text, this.x, this.y);
+            this.y -= 1;
+            this.life--;
+            ctx.globalAlpha = 1.0;
+        }
+    }
+
+    class Balloon {
+        constructor(duration) {
+            this.radius = 40;
+            this.x = Math.random() * (canvas.width - 100) + 50;
+            this.y = Math.random() * (canvas.height - 150) + 100;
+            const keys = Object.keys(BALLOON_CONF);
+            this.label = keys[Math.floor(Math.random() * keys.length)];
+            this.conf = BALLOON_CONF[this.label];
+            this.spawnTime = Date.now();
+            this.duration = duration;
+            this.alpha = 0;
+        }
+        draw(now) {
+            const elapsed = now - this.spawnTime;
+            const remain = this.duration - elapsed;
+            const fadeRange = 400;
+            if (elapsed < fadeRange) this.alpha = elapsed / fadeRange;
+            else if (remain < fadeRange) this.alpha = remain / fadeRange;
+            else this.alpha = 1.0;
+            this.alpha = Math.max(0, Math.min(1, this.alpha));
+            ctx.globalAlpha = this.alpha;
+            if (this.conf.color === "rainbow") {
+                const gradient = ctx.createRadialGradient(this.x, this.y, 5, this.x, this.y, this.radius);
+                gradient.addColorStop(1, "red");
+                gradient.addColorStop(0.7, "yellow");
+                gradient.addColorStop(0.1, "cyan");
+                ctx.fillStyle = gradient;
+            } else { ctx.fillStyle = this.conf.color; }
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = this.label === "÷2" ? "white" : "black";
+            ctx.font = "bold 20px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(this.label, this.x, this.y);
+            ctx.globalAlpha = 1.0;
+            return remain > 0;
+        }
+    }
+
+    function spawnLogic(now, elapsedSec) {
+        const spawnInterval = Math.max(250, 1000 - (elapsedSec * 15));
+        if (now - lastSpawnTime > spawnInterval) {
+            const duration = Math.max(500, 2000 - (elapsedSec * 25));
+            balloons.push(new Balloon(duration));
+            lastSpawnTime = now;
+        }
+    }
+
+    function startGame() {
+        startBtn.classList.add('hidden');
+        endButtons.classList.add('hidden');
+        downloadBtn.classList.add('hidden');
+        gameTitle.classList.add('hidden');
+        homeBtn.classList.remove('hidden');
+
+        score = 0;
+        balloons = [];
+        floatingTexts = [];
+        isGameRunning = false;
+        isCountingDown = false;
+        isStarting = true;
+        isShowingResult = false;
+        startCountdownValue = 3;
+
+        readySound.currentTime = 0;
+        readySound.play();
+
+        const startTimer = setInterval(() => {
+            startCountdownValue--;
+            if (startCountdownValue > 0) {
+                readySound.currentTime = 0;
+                readySound.play();
+            } else {
+                clearInterval(startTimer);
+                isStarting = false;
+                isGameRunning = true;
+                startTime = Date.now();
+                lastSpawnTime = 0;
+                startSound.currentTime = 0;
+                startSound.play();
+            }
+        }, 1000);
+    }
+
+    function goHome() {
+        startTime = 0;
+        isGameRunning = false;
+        isCountingDown = false;
+        isStarting = false;
+        isShowingResult = false;
+
+        startBtn.classList.remove('hidden');
+        gameTitle.classList.remove('hidden');
+        endButtons.classList.add('hidden');
+        downloadBtn.classList.add('hidden');
+        homeBtn.classList.add('hidden');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function handleGameOver() {
+        isGameRunning = false;
+        isCountingDown = true;
+        homeBtn.classList.add('hidden'); 
+        countdownValue = 3;
+        
+        const timer = setInterval(() => {
+            countdownValue--;
+            if (countdownValue <= 0) {
+                clearInterval(timer);
+                isCountingDown = false;
+                endButtons.classList.remove('hidden');
+                showResultBtn.classList.remove('hidden');
+                homeBtn.classList.remove('hidden');
+            }
+        }, 1000);
+    }
+
+    showResultBtn.addEventListener('click', () => {
+        const name = prompt("이름:");
+        if (name !== null && name !== "") {
+            userName = name;
+            isShowingResult = true;
+            showResultBtn.classList.add('hidden');
+            downloadBtn.classList.remove('hidden');
+        }
+    });
+
+    downloadBtn.addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = `${userName}의 결과.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    });
+
+    function update() {
+        const now = Date.now();
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        if (isStarting) {
+            ctx.fillStyle = "#ff4757";
+            ctx.font = "bold 120px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(startCountdownValue, canvas.width / 2 - 20, canvas.height / 2);
+            ctx.font = "bold 40px Arial";
+            ctx.fillText("초", canvas.width / 2 + 40, canvas.height / 2 + 20);
+
+            ctx.fillStyle = "black";
+            ctx.font = "30px Arial";
+            ctx.fillText(`0점 | ${GAME_DURATION / 1000}초`, canvas.width / 2, 40);
+        }
+        else if (isGameRunning) {
+            const elapsedTotal = now - startTime;
+            const remTime = Math.max(0, (GAME_DURATION - elapsedTotal) / 1000);
+            if (remTime > 0) {
+                spawnLogic(now, (GAME_DURATION/1000) - remTime);
+            } else {
+                handleGameOver();
+            }
+            balloons = balloons.filter(b => b.draw(now));
+            floatingTexts = floatingTexts.filter(ft => {
+                ft.draw();
+                return ft.life > 0;
+            });
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.font = "30px Arial";
+            ctx.fillText(`${score}점 | ${Math.floor(remTime)}초`, canvas.width / 2, 40);
+        } 
+        else if (isShowingResult) {
+            ctx.fillStyle = "black";
+            ctx.font = "60px Arial";
+            ctx.textAlign = "left";
+            ctx.fillText(`${userName} 님의`, 60, canvas.height / 2 - 120);
+            ctx.textAlign = "center";
+            ctx.fillText(`풍선 터트리기 점수는`,canvas.width / 2, canvas.height / 2 - 30);
+            ctx.textAlign = "right";
+            ctx.fillText(`${score}점이에요!`, canvas.width - 60, canvas.height / 2 + 60);
+
+            const qrSize = 100;
+            const bottomY = canvas.height - 150;
+
+            if (qrImage.complete) {
+                ctx.drawImage(qrImage, canvas.width / 2 - qrSize / 2 - 210, bottomY, qrSize, qrSize);
+            }
+
+            ctx.fillStyle = "black";
+            ctx.font = "50px Arial";
+            ctx.textAlign = "left";
+            ctx.fillText("풍선터트리기.kro.kr", canvas.width / 2 - 130, bottomY + qrSize/2 + 5);
+        }
+        else if (startTime !== 0) {
+            ctx.fillStyle = "red";
+            ctx.font = "60px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 50);
+            
+            ctx.fillStyle = "black";
+            ctx.font = "30px Arial";
+            ctx.fillText(`${score}점`, canvas.width / 2, canvas.height / 2 + 10);
+
+            if (isCountingDown) {
+                ctx.fillText(`${countdownValue}초...`, canvas.width / 2, canvas.height / 2 + 70);
+            }
+        }
+        requestAnimationFrame(update);
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+        if (!isGameRunning) return;
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        for (let i = balloons.length - 1; i >= 0; i--) {
+            const b = balloons[i];
+            const dist = Math.sqrt((b.x - mx)**2 + (b.y - my)**2);
+            if (dist < b.radius) {
+                popSound.currentTime = 0;
+                popSound.play();
+                const oldScore = score;
+                const eff = b.conf.effect;
+                if (eff === "double") score *= 2;
+                else if (eff === "half") score = Math.floor(score / 2);
+                else if (eff === "random") {
+                    const rv = [1, 2, 3, -2][Math.floor(Math.random() * 4)];
+                    score += rv;
+                } else { score += eff; }
+                const diff = score - oldScore;
+                const diffText = diff >= 0 ? `+${diff}` : `${diff}`;
+                const color = diff >= 0 ? "red" : "blue";
+                floatingTexts.push(new FloatingText(b.x, b.y, diffText, color));
+                balloons.splice(i, 1);
+                break;
+            }
+        }
+    });
+
+    homeBtn.addEventListener('click', goHome);
+
+    [startBtn, showResultBtn].forEach(btn => {
+        btn.addEventListener('mouseenter', () => {
+            popSound.currentTime = 0;
+            popSound.play();
+        });
+    });
+
+    [homeBtn, downloadBtn].forEach(btn => {
+        btn.addEventListener('mouseenter', () => {
+            tickSound.currentTime = 0;
+            tickSound.play();
+        });
+    });
+    startBtn.addEventListener('click', startGame);
+
+    update();
+</script>
+</body>
+</html>
