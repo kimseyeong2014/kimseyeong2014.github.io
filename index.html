@@ -10,7 +10,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 100dvh;
             background-color: #f0f0f0;
             touch-action: manipulation;
             overflow: hidden;
@@ -39,6 +39,9 @@
             font-size: 48px;
             color: #333;
         }
+        #ui-overlay.only-input.rank-input > :not(#nameInputBox) {
+            display: none !important;
+        }
 
         button {
             padding: 15px 40px;
@@ -57,12 +60,28 @@
             background-color: #ff6b81;
         }
 
-        #homeBtn, #downloadBtn {
+        #homeBtn, #downloadBtn, #rankBtn, #submitRankBtn, #googleBtn, #nameBtn, #shopBtn {
             background-color: #2f3542;
             padding: 10px 20px;
             font-size: 16px;
             border-radius: 20px;
             width: 120px;
+        }
+        #showResultBtn {
+            padding: 12px 32px;
+            font-size: 20px;
+            border-radius: 24px;
+        }
+        #submitRankBtn {
+            background-color: #ffd43b;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 320px;
+            z-index: 50;
+        }
+        #submitRankBtn:hover {
+            background-color: #ffe066;
         }
 
         .result-button-container {
@@ -83,7 +102,7 @@
         }
 
         .button-group {
-            margin-top: 150px;
+            margin-top: 300px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -92,26 +111,251 @@
         .hidden {
             display: none !important;
         }
+
+        #tipText {
+            position: absolute;
+            bottom: 30px;
+            font-size: 20px;
+            pointer-events: none;
+        }
+
+        #googleBtn, #nameBtn, #shopBtn {
+            position: absolute;
+            top: 10px;
+        }
+        #googleBtn {
+            left: 40px;
+            background: #1e90ff;
+        }
+        #googleBtn.logout {
+            background: #ff4757;
+        }
+        #nameBtn {
+            left: 170px;
+            background: #2f3542;
+        }
+        #shopBtn {
+            right: 40px;
+            width: 80px;
+            background: #8e44ad;
+        }
+
+        #nameInputBox.rank-mode {
+            margin-top: 300px;
+        }
+        #nameInputBox.rename-mode {
+            position: absolute;
+            top: 70px;
+            left: -340px;
+            right: 0;
+        }
+
+        #nameOkBtn {
+            padding: 6px 12px;
+            font-size: 24px;
+            border-radius: 12px;
+            margin-top: 0;
+            background: #ff4757;
+        }
+
+    #ui-overlay.only-shop > :not(#shopModal) {
+        display: none !important;
+    }
+    #shopModal {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: auto;
+    }
+    .shop-box {
+        width: 720px;
+        height: 520px;
+        background: white;
+        border-radius: 18px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        padding: 18px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    .shop-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    .shop-title {
+        font-size: 34px;
+        font-weight: 700;
+    }
+    .shop-coins {
+        font-size: 22px;
+        font-weight: 700;
+        margin-left: auto;
+    }
+    .shop-close {
+        width: 44px;
+            height: 44px;
+        border-radius: 50%;
+        padding: 0;
+        font-size: 22px;
+        background: #ff4757;
+    }
+    .shop-tabs {
+        display: flex;
+        gap: 10px;
+        margin: 8px 0 14px 0;
+    }
+    .shop-tab {
+        flex: 1;
+        padding: 10px 0;
+        font-size: 20px;
+        border-radius: 14px;
+        background: #dfe4ea;
+        color: #2f3542;
+    }
+    .shop-tab.active {
+        background: #2f3542;
+        color: white;
+    }
+    .shop-content {
+        flex: 1;
+        overflow: auto;
+        padding: 8px;
+        border-radius: 14px;
+        background: #f6f7fb;
+    }
+    .shop-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        background: white;
+        border-radius: 14px;
+        padding: 12px 12px;
+        margin-bottom: 10px;
+    }
+    .shop-row .left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 20px;
+        font-weight: 700;
+    }
+    .shop-badge {
+        font-size: 16px;
+        font-weight: 700;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #ecf0f1;
+    }
+    .shop-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .shop-mini {
+        padding: 8px 12px;
+        font-size: 16px;
+        border-radius: 12px;
+        width: auto;
+        background: #2f3542;
+    }
+    .shop-mini.buy {
+        background: #2ed573;
+    }
+    .shop-mini.buy:disabled {
+        background: #aaa;
+        cursor: not-allowed;
+    }
+    .shop-mini.use {
+        background: #ffd43b;
+        color: black;
+    }
+    .shop-mini.using {
+        background: #57606f;
+    }
     </style>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9212488803476854"
+     crossorigin="anonymous"></script>
 </head>
 <body>
 
 <div id="ui-overlay">
+    <button id="googleBtn">구글 로그인</button>
+    <button id="shopBtn">상점</button>
+    <button id="nameBtn" class="hidden">이름 바꾸기</button>
     <h1 id="gameTitle">풍선 터트리기</h1>
     <button id="startBtn">게임 시작</button>
-    
+    <div id="tipText">TIP:</div>
     <div class="result-button-container">
         <button id="homeBtn" class="hidden">처음으로</button> 
         <button id="downloadBtn" class="hidden">결과 받기</button>
     </div>
-    
     <div id="endButtons" class="button-group hidden">
         <button id="showResultBtn">결과 보기</button>
     </div>
+    <div id="nameInputBox" class="hidden" style="text-align:center;">
+        <div id="nameError" style="color:red;font-size:16px;margin-bottom:6px;"></div>
+        <div style="display:flex;gap:8px;justify-content:center;align-items:center;">
+            <span style="font-size:22px;">이름:</span>
+            <input id="nameInput" maxlength="10" style="width:222px;font-size:24px;">
+            <button id="nameOkBtn">O</button>
+        </div>
+    </div>
+    <div id="shopModal" class="hidden">
+        <div class="shop-box">
+            <div class="shop-top">
+                <div class="shop-title">상점</div>
+                <div class="shop-coins">현재 <span id="shopCoins">0</span>ⓒ</div>
+                <button id="shopCloseBtn" class="shop-close">✕</button>
+            </div>
+
+            <div class="shop-tabs">
+                <button class="shop-tab active" data-tab="name">이름</button>
+                <button class="shop-tab" data-tab="icon">아이콘</button>
+                <button class="shop-tab" data-tab="item">아이템</button>
+            </div>
+
+            <div id="shopContent" class="shop-content"></div>
+        </div>
+    </div>
+    <button id="rankBtn">순위 보기</button>
 </div>
+<button id="submitRankBtn" class="hidden">순위에 들기</button>
 <canvas id="gameCanvas" width="800" height="600"></canvas>
 
-<script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import {
+        getFirestore, collection, addDoc,
+        query, where, orderBy, limit, getDocs, deleteDoc,
+        doc, getDoc, setDoc, updateDoc, increment
+    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import {
+        getAuth, GoogleAuthProvider,
+        signInWithPopup, signOut,
+        onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBjToZlCWZ-m0QI1YS_6qkworo4XAjmZwA",
+        authDomain: "balloon--pop.firebaseapp.com",
+        projectId: "balloon--pop",
+        storageBucket: "balloon--pop.firebasestorage.app",
+        messagingSenderId: "94138266236",
+        appId: "1:94138266236:web:9de24c4c440b114d7ccff9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+    let user = null;
+
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const startBtn = document.getElementById('startBtn');
@@ -120,6 +364,33 @@
     const homeBtn = document.getElementById('homeBtn');
     const endButtons = document.getElementById('endButtons');
     const gameTitle = document.getElementById('gameTitle');
+    const rankBtn = document.getElementById('rankBtn');
+    const submitRankBtn = document.getElementById('submitRankBtn');
+    const nameInputBox = document.getElementById('nameInputBox');
+    const nameInput = document.getElementById('nameInput');
+    const nameError = document.getElementById('nameError');
+    const nameOkBtn = document.getElementById('nameOkBtn');
+    const googleBtn = document.getElementById('googleBtn');
+    const nameBtn = document.getElementById('nameBtn');
+    const shopBtn = document.getElementById('shopBtn');
+    const shopModal = document.getElementById("shopModal");
+    const shopContent = document.getElementById("shopContent");
+    const shopCoinsEl = document.getElementById("shopCoins");
+    const shopCloseBtn = document.getElementById("shopCloseBtn");
+    const MAINT = 0;
+    const tips = [
+      "×2는 늘 좋아요",
+      "÷2는 늘 나빠요",
+      "?는 -2, +1, +2, +3의 하나에요",
+      "막 누르기보다 잘 눌러봐요",
+      "-2는 덫이에요",
+      "갈수록 빨리 나와요",
+      "큰 점수는 ×2에서 와요",
+      "처음은 느리니 뒤를 노려요",
+      "랜덤 풍선은 기대돼요",
+      "차분해야 점수가 높아요"
+    ];
+    tips.push(`팁은 ${tips.length+1}개 있어요`);
 
     const popSound = new Audio('https://assets.scratch.mit.edu/83a9787d4cb6f3b7632b4ddfebf74367.wav');
     const tickSound = new Audio('https://playentry.org/uploads/71/ef/71efd3bcf64d5f497468c504782f050b.mp3');
@@ -129,6 +400,9 @@
     const qrImage = new Image();
     qrImage.crossOrigin = "anonymous";
     qrImage.src = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=http://풍선터트리기.kro.kr";
+
+    const maintImage = new Image();
+    maintImage.src = "https://i.ibb.co/p6RZjWJS/image.png";
 
     let score = 0;
     let startTime = 0;
@@ -140,9 +414,51 @@
     let isStarting = false;
     let isShowingResult = false;
     let userName = "";
+    let profile = null;
+    let coinsCredited = false;
     let countdownValue = 0;
     let startCountdownValue = 3;
-    const GAME_DURATION = 60000;
+    let rankingCache = null;
+    let rankingLoading = false;
+    let isShowingRanking = false;
+    let hasSubmittedRank = false;
+    let tipTimer = null;
+    let nameInputMode = null;
+    let myBestThisWeek = -Infinity;
+    let maintOk = false;
+    let maintSeq = "";
+    const GAME_DURATION = MAINT ? 1000 : 60000;
+    const GUEST_ICON_URL = "https://upload.wikimedia.org/wikipedia/commons/d/d7/VK_icons_user_square_outline_56.svg";
+    const GOOGLE_ICON_URL = 'https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg';
+    const BALLOON_ICON_URL = "https://kimseyeong2014.github.io/무지개 풍선.svg";
+    const YOUTUBE_ICON_URL = "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_(2017).svg";
+
+    const SHOP = {
+        nameColors: [
+            { id: "black", label: "검은 이름", price: 0, color: "black" },
+            { id: "red",     label: "빨간 이름", price: 1000000, color: "red" },
+            { id: "orange",label: "주황 이름", price: 1000000, color: "orange" },
+            { id: "yellow",label: "노란 이름", price: 1000000, color: "gold" },
+            { id: "green", label: "초록 이름", price: 1000000, color: "green" },
+            { id: "sky",     label: "하늘 이름", price: 1000000, color: "deepskyblue" },
+            { id: "blue",    label: "파란 이름", price: 1000000, color: "blue" },
+            { id: "purple",label: "보라 이름", price: 1000000, color: "purple" },
+        ],
+        icons: [
+            { id: "google", label: "구글 아이콘", price: 0, url: GOOGLE_ICON_URL },
+            { id: "balloon", label: "풍선 아이콘", price: 0, url: BALLOON_ICON_URL },
+            { id: "youtube", label: "유튜브 아이콘", price: 2000000, url: YOUTUBE_ICON_URL },
+        ],
+        items: [
+            { id: "spawn2", label: "풍선 2배로", price: 100000000, mult: 2 },
+            { id: "spawn3", label: "풍선 3배로", price: 200000000, mult: 3 },
+        ]
+    };
+
+    function fmtCoins(n) {
+        n = Number.isFinite(n) ? n : 0;
+        return n.toLocaleString("ko-KR");
+    }
 
     const BALLOON_CONF = {
         "+1": { effect: 1, color: "red" },
@@ -215,7 +531,8 @@
     }
 
     function spawnLogic(now, elapsedSec) {
-        const spawnInterval = Math.max(250, 1000 - (elapsedSec * 15));
+        const mult = user && profile?.spawnMult ? profile.spawnMult : 1;
+        const spawnInterval = Math.max(250, (1000 - (elapsedSec * 15)) / mult);
         if (now - lastSpawnTime > spawnInterval) {
             const duration = Math.max(500, 2000 - (elapsedSec * 25));
             balloons.push(new Balloon(duration));
@@ -223,12 +540,320 @@
         }
     }
 
+    function getWeekKey() {
+        const now = new Date();
+        const firstDay = new Date(now.getFullYear(), 0, 1);
+        const day = Math.floor((now - firstDay) / 86400000);
+        const week = Math.floor((day + firstDay.getDay()) / 7);
+        return `${now.getFullYear()}-W${week}`;
+    }
+
+    async function submitScore(name, score) {
+        try {
+            const weekKey = getWeekKey();
+            const uid = user?.uid || null;
+
+            if (uid) {
+                const qOld = query(
+                    collection(db, "scores"),
+                    where("uid", "==", uid),
+                    limit(50)
+                );
+                const oldSnap = await getDocs(qOld);
+                for (const d of oldSnap.docs) {
+                    const data = d.data();
+                    if (data.week === weekKey) {
+                        await deleteDoc(d.ref);
+                    }
+                }
+            }
+
+            const iconUrl = uid ? (profile?.iconUrl || GOOGLE_ICON_URL) : null;
+            const nameColor = uid ? (profile?.equippedNameColor || profile?.nameColor || "black") : "black";
+
+            await addDoc(collection(db, "scores"), {
+                name: name,
+                score: score,
+                time: Date.now(),
+                week: weekKey,
+                uid: uid,
+                iconUrl: iconUrl,
+                nameColor: nameColor,
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function loadRanking() {
+        const weekKey = getWeekKey();
+        const q = query(
+            collection(db, "scores"),
+            where("week", "==", weekKey),
+            orderBy("score", "desc"),
+            orderBy("time", "asc"),
+            limit(10)
+        );
+        const snap = await getDocs(q);
+        let arr = [];
+        snap.forEach(doc => arr.push(doc.data()));
+        return arr;
+    }
+
+    function refreshRanking() {
+        rankingLoading = true;
+
+        Promise.all([loadRanking(), refreshMyBestThisWeek()])
+          .then(([list]) => {
+              rankingCache = list;
+              rankingLoading = false;
+          })
+          .catch(() => {
+              rankingCache = [];
+              rankingLoading = false;
+          });
+    }
+
+    async function updateMyWeekScoreName(newName) {
+        if (!user?.uid) return;
+        const weekKey = getWeekKey();
+
+        const qOld = query(
+            collection(db, "scores"),
+            where("uid", "==", user.uid),
+            limit(50)
+        );
+        const snap = await getDocs(qOld);
+        for (const d of snap.docs) {
+            const data = d.data();
+            if (data.week === weekKey) {
+                await updateDoc(d.ref, { name: newName });
+            }
+        }
+    }
+
+    async function updateMyWeekScoreCosmetics({ iconUrl, nameColor }) {
+        if (!user?.uid) return;
+        const weekKey = getWeekKey();
+
+        const qOld = query(
+            collection(db, "scores"),
+            where("uid", "==", user.uid),
+            limit(50)
+        );
+        const snap = await getDocs(qOld);
+
+        for (const d of snap.docs) {
+            const data = d.data();
+            if (data.week === weekKey) {
+                const patch = {};
+                if (typeof iconUrl === "string") patch.iconUrl = iconUrl;
+                if (typeof nameColor === "string") patch.nameColor = nameColor;
+                if (Object.keys(patch).length) await updateDoc(d.ref, patch);
+            }
+        }
+    }
+
+    async function refreshMyBestThisWeek() {
+        myBestThisWeek = -Infinity;
+        if (!user?.uid) return;
+
+        const weekKey = getWeekKey();
+        const qMine = query(
+            collection(db, "scores"),
+            where("uid", "==", user.uid),
+            limit(50)
+        );
+        const snap = await getDocs(qMine);
+        for (const d of snap.docs) {
+            const data = d.data();
+            if (data.week === weekKey) {
+                const s = Number(data.score);
+                if (Number.isFinite(s)) myBestThisWeek = Math.max(myBestThisWeek, s);
+            }
+        }
+    }
+    const iconCache = new Map();
+    function getIconImage(url) {
+        if (!url) return null;
+        if (iconCache.has(url)) return iconCache.get(url);
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = url;
+        iconCache.set(url, img);
+        return img;
+    }
+
+    function setRandomTip() {
+        const t = tips[Math.floor(Math.random() * tips.length)];
+        document.getElementById("tipText").textContent = "TIP: " + t;
+    }
+
+    async function googleLogin() {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            user = result.user;
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function googleLogout() {
+        await signOut(auth);
+        user = null;
+    }
+
+    function sanitizeName(raw) {
+        if (!raw) return null;
+        let name = String(raw).trim().slice(0, 10);
+        if (!name) return null;
+        if (!/^[ -~ㄱ-ㆎ가-힣ᄀ-ᇿힰ-ퟻꥠ-ꥼ]+$/.test(name)) return null;
+        return name;
+    }
+
+    function userDocRef(uid) {
+        return doc(db, "users", uid);
+    }
+
+    async function ensureUserProfile() {
+        if (!user?.uid) {
+            profile = null;
+            return null;
+        }
+
+        const uid = user.uid;
+        const ref = userDocRef(uid);
+        const snap = await getDoc(ref);
+
+        if (!snap.exists()) {
+            const initialName =
+                sanitizeName(user.displayName) ||
+                "이름없음";
+
+            const data = {
+                name: initialName,
+                coins: 0,
+                iconUrl: GOOGLE_ICON_URL,
+                updatedAt: Date.now(),
+
+                nameColor: "black",
+                ownedNameColors: ["black"],
+                equippedNameColor: "black",
+                ownedIcons: ["google", "balloon"],
+                equippedIcon: "google",
+                ownedItems: [],
+                spawnMult: 1,
+            };
+            await setDoc(ref, data);
+            profile = { uid, ...data };
+            return profile;
+        } else {
+            const data = snap.data();
+            profile = {
+                uid,
+                name: sanitizeName(data.name) || (sanitizeName(user.displayName) || "무명"),
+                coins: Number.isFinite(data.coins) ? data.coins : 0,
+                iconUrl: data.iconUrl || GOOGLE_ICON_URL,
+                nameColor: data.nameColor || "black",
+                ownedNameColors: Array.isArray(data.ownedNameColors) ? data.ownedNameColors : ["black"],
+                equippedNameColor: data.equippedNameColor || (data.nameColor || "black"),
+                ownedIcons: Array.isArray(data.ownedIcons) ? data.ownedIcons : ["google", "balloon"],
+                equippedIcon: data.equippedIcon || "google",
+                ownedItems: Array.isArray(data.ownedItems) ? data.ownedItems : [],
+                spawnMult: Number.isFinite(data.spawnMult) ? data.spawnMult : 1,
+            };
+            const patch = {};
+            if (!("nameColor" in data)) patch.nameColor = "black";
+            if (!("ownedNameColors" in data)) patch.ownedNameColors = ["black"];
+            if (!("equippedNameColor" in data)) patch.equippedNameColor = patch.nameColor || "black";
+            if (!("ownedIcons" in data)) patch.ownedIcons = ["google", "balloon"];
+            if (!("equippedIcon" in data)) patch.equippedIcon = "google";
+            if (!("ownedItems" in data)) patch.ownedItems = [];
+            if (!("spawnMult" in data)) patch.spawnMult = 1;
+            if (Object.keys(patch).length) await updateDoc(ref, patch);
+            return profile;
+        }
+    }
+
+    async function setProfileName(newName) {
+        if (!user?.uid) return;
+        const name = sanitizeName(newName);
+        if (!name) throw new Error("bad_name");
+
+        await updateDoc(userDocRef(user.uid), {
+            name,
+            updatedAt: Date.now(),
+        });
+
+        if (profile) profile.name = name;
+        await updateMyWeekScoreName(name);
+    }
+
+    function getAutoName() {
+        if (user && profile?.name) return profile.name;
+        if (!user) return null;
+        return sanitizeName(user.displayName);
+    }
+
+    async function creditCoinsOnce() {
+        if (!user?.uid) return;
+        if (coinsCredited) return;
+
+        const gain = Math.max(0, score);
+        coinsCredited = true;
+
+        if (gain === 0) return;
+
+        await updateDoc(userDocRef(user.uid), {
+            coins: increment(gain),
+            updatedAt: Date.now(),
+        });
+
+        if (profile) profile.coins += gain;
+    }
+
+    onAuthStateChanged(auth, async (u) => {
+        user = u;
+
+        if (user) {
+            googleBtn.textContent = "로그아웃";
+            googleBtn.classList.add("logout");
+
+            try {
+                await ensureUserProfile();
+            } catch (e) {
+                console.error(e);
+                profile = null;
+            }
+
+            nameBtn.classList.remove("hidden");
+        } else {
+            googleBtn.textContent = "구글 로그인";
+            googleBtn.classList.remove("logout");
+            nameBtn.classList.add("hidden");
+            profile = null;
+        }
+    });
+
+    function startTipCycle() {
+        if (tipTimer) clearInterval(tipTimer);
+        tipTimer = setInterval(() => {
+            if (!isGameRunning && !isShowingResult) {
+                setRandomTip();
+            }
+        }, 5000);
+    }
+
     function startGame() {
+        closeNameInput();
         startBtn.classList.add('hidden');
-        endButtons.classList.add('hidden');
         downloadBtn.classList.add('hidden');
         gameTitle.classList.add('hidden');
-        homeBtn.classList.remove('hidden');
+        rankBtn.classList.add('hidden');
+        googleBtn.classList.add('hidden');
+        nameBtn.classList.add('hidden');
+        shopBtn.classList.add('hidden');
+        document.getElementById("tipText").style.display = "none";
 
         score = 0;
         balloons = [];
@@ -238,6 +863,8 @@
         isStarting = true;
         isShowingResult = false;
         startCountdownValue = 3;
+        hasSubmittedRank = false;
+        coinsCredited = false;
 
         readySound.currentTime = 0;
         readySound.play();
@@ -255,52 +882,66 @@
                 lastSpawnTime = 0;
                 startSound.currentTime = 0;
                 startSound.play();
+                homeBtn.classList.remove('hidden'); 
             }
         }, 1000);
     }
 
     function goHome() {
+        closeNameInput();
         startTime = 0;
         isGameRunning = false;
         isCountingDown = false;
         isStarting = false;
         isShowingResult = false;
+        isShowingRanking = false;
 
         startBtn.classList.remove('hidden');
         gameTitle.classList.remove('hidden');
+        googleBtn.classList.remove('hidden');
+        if (user) nameBtn.classList.remove('hidden');
+        else nameBtn.classList.add('hidden');
+        shopBtn.classList.remove('hidden');
         endButtons.classList.add('hidden');
         downloadBtn.classList.add('hidden');
         homeBtn.classList.add('hidden');
+        rankBtn.classList.remove('hidden');
+        document.getElementById("tipText").style.display = "block";
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        refreshRanking();
     }
 
     function handleGameOver() {
         isGameRunning = false;
         isCountingDown = true;
-        homeBtn.classList.add('hidden'); 
+        homeBtn.classList.add('hidden');
+        document.getElementById("tipText").style.display = "block";
         countdownValue = 3;
-        
+
         const timer = setInterval(() => {
             countdownValue--;
             if (countdownValue <= 0) {
                 clearInterval(timer);
                 isCountingDown = false;
+
                 endButtons.classList.remove('hidden');
-                showResultBtn.classList.remove('hidden');
+                endButtons.style.marginTop = "180px";
                 homeBtn.classList.remove('hidden');
+                rankBtn.classList.remove('hidden');
+                showResultBtn.classList.remove('hidden');
+                googleBtn.classList.remove('hidden');
+                if (user) nameBtn.classList.remove('hidden');
+                else nameBtn.classList.add('hidden');
+                shopBtn.classList.add('hidden');
+
+                rankingLoading = true;
+                loadRanking().then(list => {
+                    rankingCache = list;
+                    rankingLoading = false;
+                });
             }
         }, 1000);
     }
-
-    showResultBtn.addEventListener('click', () => {
-        const name = prompt("이름:");
-        if (name !== null && name !== "") {
-            userName = name;
-            isShowingResult = true;
-            showResultBtn.classList.add('hidden');
-            downloadBtn.classList.remove('hidden');
-        }
-    });
 
     downloadBtn.addEventListener('click', () => {
         const link = document.createElement('a');
@@ -309,11 +950,105 @@
         link.click();
     });
 
+    rankBtn.onclick = async () => {
+        nameInputMode = null;
+        document.getElementById("ui-overlay").classList.remove("only-input");
+        nameInputBox.classList.add("hidden");
+        nameInputBox.classList.remove("rank-mode");
+
+        isShowingRanking = true;
+        refreshRanking();
+    };
+
     function update() {
         const now = Date.now();
+
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
+
+        if (isShowingRanking) {
+            const overlay = document.getElementById("ui-overlay");
+            overlay.style.display = (nameInputMode === "rank" || nameInputMode === "result") ? "flex" : "none";
+            ctx.fillStyle = "rgba(0,0,0,0.6)";
+            ctx.fillRect(0,0,canvas.width,canvas.height);
+
+            ctx.fillStyle = "white";
+            ctx.beginPath();
+            ctx.roundRect(200,80,400,440,16);
+            ctx.fill();
+
+            ctx.fillStyle = "black";
+            ctx.font = "28px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("주간 순위", 400, 120);
+
+            if (!rankingLoading && rankingCache) {
+                ctx.font = "20px Arial";
+                ctx.textBaseline = "middle";
+
+                const baseX = 260;
+                const iconSize = 24;
+
+                for (let i = 0; i < rankingCache.length; i++) {
+                    const r = rankingCache[i];
+                    const y = 180 + i * 28;
+
+                    ctx.textAlign = "left";
+                    ctx.fillStyle = "black";
+                    ctx.fillText(`${i + 1}.`, baseX - 30, y);
+
+                    const iconUrl = r.iconUrl || GUEST_ICON_URL;
+                    const img = getIconImage(iconUrl);
+                    if (img?.complete) {
+                        ctx.drawImage(img, baseX, y - iconSize / 2 - 1, iconSize, iconSize);
+                    }
+
+                    const colorId = r.nameColor || "black";
+                    const color = SHOP.nameColors.find(x => x.id === colorId)?.color || "black";
+
+                    const nameX = baseX + iconSize + 6;
+
+                    ctx.textAlign = "left";
+                    ctx.fillStyle = color;
+                    ctx.fillText(r.name, nameX, y);
+
+                    ctx.textAlign = "right";
+                    ctx.fillStyle = "black";
+                    ctx.fillText(`${r.score}점`, 570, y);
+                }
+
+                ctx.textAlign = "center";
+                ctx.textBaseline = "alphabetic";
+            }
+
+            if (!rankingCache || hasSubmittedRank || startTime === 0) {
+                submitRankBtn.classList.add('hidden');
+            } else {
+                const canEnter =
+                  rankingCache.length < 10 ||
+                  score > rankingCache[rankingCache.length - 1].score;
+                const beatsMyBest = !user ? true : (score > (Number.isFinite(myBestThisWeek) ? myBestThisWeek : -Infinity));
+
+                submitRankBtn.classList.toggle('hidden', !canEnter || !beatsMyBest || nameInputMode === "rank");
+            }
+            requestAnimationFrame(update);
+            return;
+        }
+
+        if (MAINT && !maintOk) {
+            document.getElementById("ui-overlay").style.display = "none";
+
+            if (maintImage.complete) {
+                ctx.drawImage(maintImage, 0, 140, 800, 320);
+            }
+
+            requestAnimationFrame(update);
+            return;
+        }
+        else {
+            document.getElementById("ui-overlay").style.display = "flex";
+        }
+
         if (isStarting) {
             ctx.fillStyle = "#ff4757";
             ctx.font = "bold 120px Arial";
@@ -372,7 +1107,7 @@
             ctx.font = "60px Arial";
             ctx.textAlign = "center";
             ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 50);
-            
+
             ctx.fillStyle = "black";
             ctx.font = "30px Arial";
             ctx.fillText(`${score}점`, canvas.width / 2, canvas.height / 2 + 10);
@@ -413,23 +1148,474 @@
         }
     });
 
-    homeBtn.addEventListener('click', goHome);
+    canvas.addEventListener("mousedown", ()=>{
+        if (!shopModal.classList.contains("hidden")) return;
 
-    [startBtn, showResultBtn].forEach(btn => {
+        if (nameInputMode === "rename") {
+            closeNameInput();
+            return;
+        }
+
+        if (isShowingRanking) {
+            isShowingRanking = false;
+            nameInputMode = null;
+            document.getElementById("ui-overlay").classList.remove("only-input");
+            nameInputBox.classList.add("hidden");
+            submitRankBtn.classList.add("hidden");
+            showResultBtn.classList.remove("hidden");
+        }
+        if (nameInputMode === "result") {
+            nameInputBox.classList.add("hidden");
+            showResultBtn.classList.remove("hidden");
+            nameInputMode = null;
+            return;
+        }
+    });
+
+    homeBtn.addEventListener('click', () => {
+        if (isShowingResult) {
+            isShowingResult = false;
+            downloadBtn.classList.add('hidden');
+            endButtons.classList.remove('hidden');
+            rankBtn.classList.remove('hidden');
+            googleBtn.classList.remove("hidden");
+            if (user) nameBtn.classList.remove('hidden');
+            else nameBtn.classList.add('hidden');
+            document.getElementById("tipText").style.display = "block";
+            homeBtn.textContent = "처음으로";
+            showResultBtn.classList.remove("hidden");
+        } else {
+            goHome();
+        }
+    });
+
+    [startBtn, showResultBtn, submitRankBtn].forEach(btn => {
         btn.addEventListener('mouseenter', () => {
             popSound.currentTime = 0;
             popSound.play();
         });
     });
 
-    [homeBtn, downloadBtn].forEach(btn => {
+    [homeBtn, downloadBtn, rankBtn].forEach(btn => {
         btn.addEventListener('mouseenter', () => {
             tickSound.currentTime = 0;
             tickSound.play();
         });
     });
-    startBtn.addEventListener('click', startGame);
 
+    nameInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            nameOkBtn.click();
+        }
+    });
+
+    googleBtn.onclick = async () => {
+        if (user) await googleLogout();
+        else await googleLogin();
+    };
+
+    let shopTab = "name";
+
+    function openShop() {
+        closeNameInput();
+        isShowingRanking = false;
+
+        document.getElementById("ui-overlay").classList.add("only-shop");
+        shopModal.classList.remove("hidden");
+
+        updateShopCoins();
+        renderShop();
+    }
+
+    function closeShop() {
+        document.getElementById("ui-overlay").classList.remove("only-shop");
+        shopModal.classList.add("hidden");
+    }
+
+    function updateShopCoins() {
+        const coins = user && profile ? profile.coins : 0;
+        shopCoinsEl.textContent = fmtCoins(coins);
+    }
+
+    function isOwned(list, id) {
+        return Array.isArray(list) && list.includes(id);
+    }
+
+    async function spendCoins(amount) {
+        if (!user?.uid || !profile) return false;
+        if (profile.coins < amount) return false;
+
+        profile.coins -= amount;
+        await updateDoc(userDocRef(user.uid), {
+            coins: increment(-amount),
+            updatedAt: Date.now(),
+        });
+        updateShopCoins();
+        return true;
+    }
+
+    async function buyNameColor(id) {
+        const it = SHOP.nameColors.find(x => x.id === id);
+        if (!it || !user?.uid) return;
+
+        if (isOwned(profile.ownedNameColors, id)) return;
+
+        const ok = await spendCoins(it.price);
+        if (!ok) return;
+
+        profile.ownedNameColors.push(id);
+        await updateDoc(userDocRef(user.uid), {
+            ownedNameColors: profile.ownedNameColors,
+            updatedAt: Date.now(),
+        });
+
+        renderShop();
+    }
+
+    async function useNameColor(id) {
+        if (!user?.uid || !profile) return;
+        if (!isOwned(profile.ownedNameColors, id)) return;
+
+        profile.equippedNameColor = id;
+        profile.nameColor = id;
+        await updateDoc(userDocRef(user.uid), {
+            equippedNameColor: id,
+            nameColor: id,
+            updatedAt: Date.now(),
+        });
+        await updateMyWeekScoreCosmetics({ nameColor: id });
+
+        renderShop();
+        refreshRanking();
+    }
+
+    async function buyIcon(id) {
+        const it = SHOP.icons.find(x => x.id === id);
+        if (!it || !user?.uid) return;
+
+        if (isOwned(profile.ownedIcons, id)) return;
+
+        const ok = await spendCoins(it.price);
+        if (!ok) return;
+
+        profile.ownedIcons.push(id);
+        await updateDoc(userDocRef(user.uid), {
+            ownedIcons: profile.ownedIcons,
+            updatedAt: Date.now(),
+        });
+
+        renderShop();
+    }
+
+    async function useIcon(id) {
+        const it = SHOP.icons.find(x => x.id === id);
+        if (!it || !user?.uid || !profile) return;
+        if (!isOwned(profile.ownedIcons, id)) return;
+
+        profile.equippedIcon = id;
+        profile.iconUrl = it.url;
+
+        await updateDoc(userDocRef(user.uid), {
+            equippedIcon: id,
+            iconUrl: it.url,
+            updatedAt: Date.now(),
+        });
+        await updateMyWeekScoreCosmetics({ iconUrl: it.url });
+
+        renderShop();
+        refreshRanking();
+    }
+
+    async function buyItem(id) {
+        const it = SHOP.items.find(x => x.id === id);
+        if (!it || !user?.uid || !profile) return;
+        if (isOwned(profile.ownedItems, id)) return;
+
+        const ok = await spendCoins(it.price);
+        if (!ok) return;
+
+        profile.ownedItems.push(id);
+
+        const nextMult = Math.max(profile.spawnMult || 1, it.mult);
+        profile.spawnMult = nextMult;
+
+        await updateDoc(userDocRef(user.uid), {
+            ownedItems: profile.ownedItems,
+            spawnMult: nextMult,
+            updatedAt: Date.now(),
+        });
+
+        renderShop();
+    }
+
+    function renderShop() {
+        updateShopCoins();
+
+        if (!user || !profile) {
+            shopContent.innerHTML = `<div style="padding:16px;font-size:20px;">로그인하면 상점을 사용할 수 있어요.</div>`;
+            return;
+        }
+
+        if (shopTab === "name") {
+            shopContent.innerHTML = SHOP.nameColors.map(it => {
+                const owned = isOwned(profile.ownedNameColors, it.id);
+                const using = (profile.equippedNameColor || "black") === it.id;
+
+                const priceText = it.price === 0 ? "무료" : `${fmtCoins(it.price)}ⓒ`;
+
+                return `
+                    <div class="shop-row">
+                        <div class="left">
+                            <span style="color:${it.color}">${it.label}</span>
+                            <span class="shop-badge">${priceText}</span>
+                        </div>
+                        <div class="shop-actions">
+                            ${!owned ? `<button class="shop-mini buy" ${profile.coins < it.price ? "disabled" : ""} data-buy-name="${it.id}">사기</button>` : ""}
+                            ${owned ? `<button class="shop-mini ${using ? "using" : "use"}" data-use-name="${it.id}">${using ? "씀" : "쓰기"}</button>` : ""}
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        if (shopTab === "icon") {
+            shopContent.innerHTML = SHOP.icons.map(it => {
+                const owned = isOwned(profile.ownedIcons, it.id);
+                const using = (profile.equippedIcon || "google") === it.id;
+
+                const priceText = it.price === 0 ? "무료" : `${fmtCoins(it.price)}ⓒ`;
+
+                return `
+                    <div class="shop-row">
+                        <div class="left">
+                            <img src="${it.url}" style="width:26px;height:26px;object-fit:contain" crossorigin="anonymous"/>
+                            <span>${it.label}</span>
+                            <span class="shop-badge">${priceText}</span>
+                        </div>
+                        <div class="shop-actions">
+                            ${!owned ? `<button class="shop-mini buy" ${profile.coins < it.price ? "disabled" : ""} data-buy-icon="${it.id}">사기</button>` : ""}
+                            ${owned ? `<button class="shop-mini ${using ? "using" : "use"}" data-use-icon="${it.id}">${using ? "씀" : "쓰기"}</button>` : ""}
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        if (shopTab === "item") {
+            shopContent.innerHTML = SHOP.items.map(it => {
+                const owned = isOwned(profile.ownedItems, it.id);
+                const priceText = `${fmtCoins(it.price)}ⓒ`;
+
+                return `
+                    <div class="shop-row">
+                        <div class="left">
+                            <span>${it.label}</span>
+                            <span class="shop-badge">${priceText}</span>
+                        </div>
+                        <div class="shop-actions">
+                            ${!owned ? `<button class="shop-mini buy" ${profile.coins < it.price ? "disabled" : ""} data-buy-item="${it.id}">사기</button>` : `<span class="shop-badge">적용됨</span>`}
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+    }
+
+    document.querySelectorAll(".shop-tab").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".shop-tab").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            shopTab = btn.dataset.tab;
+            renderShop();
+        });
+    });
+
+    shopContent.addEventListener("click", async (e) => {
+        const t = e.target;
+        if (!(t instanceof HTMLElement)) return;
+
+        if (t.dataset.buyName) await buyNameColor(t.dataset.buyName);
+        if (t.dataset.useName) await useNameColor(t.dataset.useName);
+
+        if (t.dataset.buyIcon) await buyIcon(t.dataset.buyIcon);
+        if (t.dataset.useIcon) await useIcon(t.dataset.useIcon);
+
+        if (t.dataset.buyItem) await buyItem(t.dataset.buyItem);
+    });
+
+    function closeNameInput() {
+        nameInputBox.classList.add("hidden");
+        nameInputBox.classList.remove("rank-mode", "rename-mode");
+        nameError.textContent = "";
+        nameInputMode = null;
+        document.getElementById("ui-overlay").classList.remove("only-input", "rank-input");
+    }
+
+    nameBtn.onclick = () => {
+        if (!user) return;
+
+        nameInputMode = "rename";
+        nameError.textContent = "";
+        nameInput.value = profile?.name || getAutoName() || "";
+        nameInputBox.classList.remove("rank-mode");
+        nameInputBox.classList.remove("hidden");
+
+        const overlay = document.getElementById("ui-overlay");
+        overlay.classList.add("only-input");
+        overlay.classList.remove("rank-input");
+
+        nameInputBox.classList.add("rename-mode");
+        nameInputBox.classList.remove("rank-mode");
+    };
+
+    submitRankBtn.onclick = async () => {
+        if (hasSubmittedRank) return;
+        const list = rankingCache;
+        const canEnter =
+            list.length < 10 ||
+            score > list[list.length-1].score;
+        if (!canEnter) return;
+
+        const auto = getAutoName();
+        if (auto) {
+            userName = auto;
+            await creditCoinsOnce();
+            await submitScore(auto, score);
+            hasSubmittedRank = true;
+            isShowingRanking = true;
+            refreshRanking();
+            return;
+        }
+
+        nameInputMode = "rank";
+        nameInput.value = "";
+        nameError.textContent = "";
+        submitRankBtn.classList.add("hidden");
+
+        const overlay = document.getElementById("ui-overlay");
+        overlay.classList.add("only-input", "rank-input");
+
+        nameInputBox.classList.remove("rename-mode");
+
+        nameInputBox.classList.add("rank-mode");
+        nameInputBox.classList.remove("hidden");
+    };
+
+    showResultBtn.onclick = async () => {
+        const auto = getAutoName();
+        if (auto) {
+            userName = auto;
+            await creditCoinsOnce();
+            isShowingResult = true;
+            endButtons.classList.add("hidden");
+            downloadBtn.classList.remove("hidden");
+            rankBtn.classList.add("hidden");
+            googleBtn.classList.add("hidden");
+            nameBtn.classList.add('hidden');
+            homeBtn.textContent = "앞으로";
+            document.getElementById("tipText").style.display = "none";
+            nameInputMode = null;
+            return;
+        }
+
+        nameInputMode = "result";
+        nameInput.value = "";
+        nameError.textContent = "";
+        nameInputBox.classList.remove("rank-mode");
+        nameInputBox.classList.remove("hidden");
+        showResultBtn.classList.add("hidden");
+    };
+
+    nameOkBtn.onclick = async () => {
+        const name = nameInput.value;
+
+        if (!name) {
+            return;
+        }
+        if (!/^[ -~ㄱ-ㆎ가-힣ᄀ-ᇿힰ-ퟻꥠ-ꥼ]+$/.test(name)) {
+            nameError.textContent = "한글과 아스키만 돼요";
+            return;
+        }
+
+        if (nameInputMode === "rename") {
+            if (!user) {
+                nameError.textContent = "로그인 필요";
+                return;
+            }
+            try {
+                await setProfileName(name);
+            } catch (e) {
+                nameError.textContent = "이름 저장 실패";
+                return;
+            }
+
+            nameInputBox.classList.add("hidden");
+            nameInputBox.classList.remove("rename-mode");
+            document.getElementById("ui-overlay").classList.remove("only-input");
+            nameInputMode = null;
+            return;
+        }
+
+        userName = name;
+        nameInputBox.classList.add("hidden");
+        nameInputBox.classList.remove("rank-mode");
+        document.getElementById("ui-overlay").classList.remove("only-input");
+
+        if (nameInputMode === "result") {
+            isShowingResult = true;
+            endButtons.classList.add("hidden");
+            downloadBtn.classList.remove("hidden");
+            rankBtn.classList.add("hidden");
+            homeBtn.textContent = "앞으로";
+            document.getElementById("tipText").style.display = "none";
+        }
+
+        if (nameInputMode === "rank") {
+            await submitScore(name, score);
+            hasSubmittedRank = true;
+            isShowingRanking = true;
+            refreshRanking();
+        }
+
+        nameInputBox.classList.remove("rename-mode");
+        nameInputMode = null;
+    };
+
+    shopBtn.onclick = () => {
+        openShop();
+    };
+    shopCloseBtn.onclick = () => {
+        closeShop();
+    };
+
+    const adModal = document.getElementById('adModal');
+    const closeAdBtn = document.getElementById('closeAdBtn');
+
+    startBtn.onclick = startGame;
+
+    window.addEventListener("keydown", (e) => {
+        if (!MAINT || maintOk) return;
+
+        maintSeq += e.key.toLowerCase();
+
+        if (!"asdf".startsWith(maintSeq)) {
+            maintSeq = "";
+            return;
+        }
+
+        if (maintSeq === "asdf") {
+            maintOk = true;
+            maintSeq = "";
+            refreshRanking();
+        }
+    });
+
+    refreshRanking();
+    endButtons.style.marginTop = "0px";
+    rankBtn.classList.remove('hidden');
+    setRandomTip();
+    startTipCycle();
     update();
 </script>
 </body>
