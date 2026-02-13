@@ -21,27 +21,6 @@
             cursor: crosshair;
         }
 
-        .kakao-ad {
-            position: fixed;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 160px;
-            height: 600px;
-            z-index: 10;
-        }
-        #kakao-ad-left {
-            left: 10px;
-        }
-        #kakao-ad-right {
-            right: 10px;
-        }
-
-        @media (max-width: 1200px) {
-            .kakao-ad {
-                display: none;
-            }
-        }
-
         #ui-overlay {
             position: absolute;
             display: flex;
@@ -168,54 +147,6 @@
             top: 70px;
             left: -340px;
             right: 0;
-        }
-
-        #adModal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        #adModal.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .ad-box {
-            position: relative;
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-        }
-
-        #closeAdBtn {
-            position: absolute;
-            top: -6px;
-            right: 4px;
-            width: 36px;
-            height: 36px;
-            padding: 0;
-            border-radius: 50%;
-            border: none;
-            background: #ff4757;
-            color: white;
-            line-height: 36px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        #closeAdBtn:disabled {
-            background: #aaa;
-            cursor: not-allowed;
         }
 
         #nameOkBtn {
@@ -392,31 +323,6 @@
 </div>
 <button id="submitRankBtn" class="hidden">순위에 들기</button>
 <canvas id="gameCanvas" width="800" height="600"></canvas>
-
-<div id="kakao-ad-left" class="kakao-ad">
-  <ins class="kakao_ad_area"
-    data-ad-unit="DAN-Xy8lp7VZ6H3qs38x"
-    data-ad-width="160"
-    data-ad-height="600"></ins>
-</div>
-
-<div id="kakao-ad-right" class="kakao-ad">
-  <ins class="kakao_ad_area"
-    data-ad-unit="DAN-vmvUv4rYl1k1NSGQ"
-    data-ad-width="160"
-    data-ad-height="600"></ins>
-</div>
-
-<div id="adModal">
-  <div class="ad-box">
-    <button id="closeAdBtn">✕</button>
-    <ins class="kakao_ad_area"
-      data-ad-unit="DAN-GXBiKh9QhvltLgkB"
-      data-ad-width="300"
-      data-ad-height="250"></ins>
-  </div>
-</div>
-<script src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
@@ -1773,39 +1679,7 @@
         closeShop();
     };
 
-    const adModal = document.getElementById('adModal');
-    const closeAdBtn = document.getElementById('closeAdBtn');
-
-    function showAdAndStart() {
-        if (!document.querySelector('.kakao_ad_area iframe')) {
-            startGame();
-            return;
-        }
-
-        adModal.classList.add('show');
-
-        let remain = 3;
-        closeAdBtn.disabled = true;
-        closeAdBtn.textContent = remain;
-
-        const adTimer = setInterval(() => {
-            remain--;
-            if (remain > 0) {
-                closeAdBtn.textContent = remain;
-            } else {
-                clearInterval(adTimer);
-                closeAdBtn.disabled = false;
-                closeAdBtn.textContent = '✕';
-            }
-        }, 1000);
-
-        closeAdBtn.onclick = () => {
-            if (closeAdBtn.disabled) return;
-            adModal.classList.remove('show');
-            startGame();
-        };
-    }
-    startBtn.onclick = showAdAndStart;
+    startBtn.onclick = startGame;
 
     window.addEventListener("keydown", (e) => {
         if (!MAINT || maintOk) return;
