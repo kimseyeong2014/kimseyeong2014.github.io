@@ -21,6 +21,27 @@
             cursor: crosshair;
         }
 
+        .kakao-ad {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 160px;
+            height: 600px;
+            z-index: 10;
+        }
+        #kakao-ad-left {
+            left: 10px;
+        }
+        #kakao-ad-right {
+            right: 10px;
+        }
+
+        @media (max-width: 1200px) {
+            .kakao-ad {
+                display: none;
+            }
+        }
+
         #ui-overlay {
             position: absolute;
             display: flex;
@@ -77,7 +98,7 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            margin-top: 320px;
+            margin-top: 350px;
             z-index: 50;
         }
         #submitRankBtn:hover {
@@ -135,19 +156,66 @@
             background: #2f3542;
         }
         #shopBtn {
-            right: 40px;
             width: 80px;
             background: #8e44ad;
         }
 
         #nameInputBox.rank-mode {
-            margin-top: 300px;
+            margin-top: 340px;
         }
         #nameInputBox.rename-mode {
             position: absolute;
             top: 70px;
             left: -340px;
             right: 0;
+        }
+
+        #adModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #adModal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .ad-box {
+            position: relative;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+        }
+
+        #closeAdBtn {
+            position: absolute;
+            top: -6px;
+            right: 4px;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 50%;
+            border: none;
+            background: #ff4757;
+            color: white;
+            line-height: 36px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        #closeAdBtn:disabled {
+            background: #aaa;
+            cursor: not-allowed;
         }
 
         #nameOkBtn {
@@ -158,129 +226,126 @@
             background: #ff4757;
         }
 
-    #ui-overlay.only-shop > :not(#shopModal) {
-        display: none !important;
-    }
-    #shopModal {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        pointer-events: auto;
-    }
-    .shop-box {
-        width: 720px;
-        height: 520px;
-        background: white;
-        border-radius: 18px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        padding: 18px;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-    }
-    .shop-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        margin-bottom: 10px;
-    }
-    .shop-title {
-        font-size: 34px;
-        font-weight: 700;
-    }
-    .shop-coins {
-        font-size: 22px;
-        font-weight: 700;
-        margin-left: auto;
-    }
-    .shop-close {
-        width: 44px;
+        #ui-overlay.only-shop > :not(#shopModal) {
+            display: none !important;
+        }
+        #shopModal {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto;
+        }
+        .shop-box {
+            width: 720px;
+            height: 520px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 18px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .shop-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .shop-title {
+            font-size: 34px;
+            font-weight: 700;
+        }
+        .shop-coins {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .shop-close {
+            width: 44px;
             height: 44px;
-        border-radius: 50%;
-        padding: 0;
-        font-size: 22px;
-        background: #ff4757;
-    }
-    .shop-tabs {
-        display: flex;
-        gap: 10px;
-        margin: 8px 0 14px 0;
-    }
-    .shop-tab {
-        flex: 1;
-        padding: 10px 0;
-        font-size: 20px;
-        border-radius: 14px;
-        background: #dfe4ea;
-        color: #2f3542;
-    }
-    .shop-tab.active {
-        background: #2f3542;
-        color: white;
-    }
-    .shop-content {
-        flex: 1;
-        overflow: auto;
-        padding: 8px;
-        border-radius: 14px;
-        background: #f6f7fb;
-    }
-    .shop-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        background: white;
-        border-radius: 14px;
-        padding: 12px 12px;
-        margin-bottom: 10px;
-    }
-    .shop-row .left {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 20px;
-        font-weight: 700;
-    }
-    .shop-badge {
-        font-size: 16px;
-        font-weight: 700;
-        padding: 6px 10px;
-        border-radius: 999px;
-        background: #ecf0f1;
-    }
-    .shop-actions {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .shop-mini {
-        padding: 8px 12px;
-        font-size: 16px;
-        border-radius: 12px;
-        width: auto;
-        background: #2f3542;
-    }
-    .shop-mini.buy {
-        background: #2ed573;
-    }
-    .shop-mini.buy:disabled {
-        background: #aaa;
-        cursor: not-allowed;
-    }
-    .shop-mini.use {
-        background: #ffd43b;
-        color: black;
-    }
-    .shop-mini.using {
-        background: #57606f;
-    }
+            border-radius: 50%;
+            padding: 0;
+            font-size: 22px;
+            background: #ff4757;
+        }
+        .shop-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 8px 0 14px 0;
+        }
+        .shop-tab {
+            flex: 1;
+            padding: 10px 0;
+            font-size: 20px;
+            border-radius: 14px;
+            background: #dfe4ea;
+            color: #2f3542;
+        }
+        .shop-tab.active {
+            background: #2f3542;
+            color: white;
+        }
+        .shop-content {
+            flex: 1;
+            overflow: auto;
+            padding: 8px;
+            border-radius: 14px;
+            background: #f6f7fb;
+        }
+        .shop-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: white;
+            border-radius: 14px;
+            padding: 12px 12px;
+            margin-bottom: 10px;
+        }
+        .shop-row .left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .shop-badge {
+            font-size: 16px;
+            font-weight: 700;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #ecf0f1;
+        }
+        .shop-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .shop-mini {
+            padding: 8px 12px;
+            font-size: 16px;
+            border-radius: 12px;
+            width: auto;
+            background: #2f3542;
+        }
+        .shop-mini.buy {
+            background: #2ed573;
+        }
+        .shop-mini.buy:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+        .shop-mini.use {
+            background: #ffd43b;
+            color: black;
+        }
+        .shop-mini.using {
+            background: #57606f;
+        }
     </style>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9212488803476854"
-     crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -301,7 +366,7 @@
     <div id="nameInputBox" class="hidden" style="text-align:center;">
         <div id="nameError" style="color:red;font-size:16px;margin-bottom:6px;"></div>
         <div style="display:flex;gap:8px;justify-content:center;align-items:center;">
-            <span style="font-size:22px;">이름:</span>
+            <span id="nameInputLabel" style="font-size:22px;">이름:</span>
             <input id="nameInput" maxlength="10" style="width:222px;font-size:24px;">
             <button id="nameOkBtn">O</button>
         </div>
@@ -310,7 +375,7 @@
         <div class="shop-box">
             <div class="shop-top">
                 <div class="shop-title">상점</div>
-                <div class="shop-coins">현재 <span id="shopCoins">0</span>ⓒ</div>
+                <div class="shop-coins"><span id="shopCoins">0</span> ⓒ</div>
                 <button id="shopCloseBtn" class="shop-close">✕</button>
             </div>
 
@@ -327,6 +392,31 @@
 </div>
 <button id="submitRankBtn" class="hidden">순위에 들기</button>
 <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<div id="kakao-ad-left" class="kakao-ad">
+  <ins class="kakao_ad_area"
+    data-ad-unit="DAN-Xy8lp7VZ6H3qs38x"
+    data-ad-width="160"
+    data-ad-height="600"></ins>
+</div>
+
+<div id="kakao-ad-right" class="kakao-ad">
+  <ins class="kakao_ad_area"
+    data-ad-unit="DAN-vmvUv4rYl1k1NSGQ"
+    data-ad-width="160"
+    data-ad-height="600"></ins>
+</div>
+
+<div id="adModal">
+  <div class="ad-box">
+    <button id="closeAdBtn">✕</button>
+    <ins class="kakao_ad_area"
+      data-ad-unit="DAN-GXBiKh9QhvltLgkB"
+      data-ad-width="300"
+      data-ad-height="250"></ins>
+  </div>
+</div>
+<script src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
@@ -391,11 +481,15 @@
       "차분해야 점수가 높아요"
     ];
     tips.push(`팁은 ${tips.length+1}개 있어요`);
+    const BAD = new RegExp([ "느으*[^가-힣]*금마?", "니[^가-힣]*(엄|앰|엠)", "(ㅄ|ㅅㅂ|ㅂㅅ)", "미친(년|놈)?", "(병|븅|빙)[^가-힣]*신", "보[^가-힣]*지", "(샤|쌰)[^가-힣]*갈", "(새|섀|쌔|썌)[^가-힣]*(기|끼)", "(섹|쎅)[^가-힣]*스", "(시|씨|쉬|쒸)이*입?[^가-힣]*(발|빨|벌|뻘|팔|펄)", "십[^가-힣]*새", "씹", "(애|에)[^가-힣]*(미|비)", "자[^가-힣]*지", "존[^가-힣]*나", "좆", "지랄", "창[^가-힣]*(녀|년|놈)", "bitch", "fuck", "sex" ].join('|'), "i");
 
     const popSound = new Audio('https://assets.scratch.mit.edu/83a9787d4cb6f3b7632b4ddfebf74367.wav');
     const tickSound = new Audio('https://playentry.org/uploads/71/ef/71efd3bcf64d5f497468c504782f050b.mp3');
     const readySound = new Audio('https://playentry.org/uploads/86/90/869085e89addb473a0799c70de94d280.mp3');
     const startSound = new Audio('https://playentry.org/uploads/43/4c/434cc2c4ac17bbce41b7fba12ee50d7b.mp3');
+    const shopTabSound = new Audio('https://playentry.org/uploads/eu/yo/euyotk0hlluppgcn0uo37ec0496mk1c3.mp3');
+    const shopUseSound = new Audio('https://playentry.org/uploads/2q/hu/2qhu3luulluppgd811th7ec049b18jkm.mp3');
+    const shopBuySound = new Audio('https://playentry.org/uploads/d9/qs/d9qsicjslluppgdt0uo37ec0497bvkkw.mp3');
  
     const qrImage = new Image();
     qrImage.crossOrigin = "anonymous";
@@ -425,33 +519,38 @@
     let tipTimer = null;
     let nameInputMode = null;
     let myBestThisWeek = -Infinity;
+    let myScoreDocsThisWeek = [];
+    let spawnMult = 1;
+    let usedItemThisRound = null;
     let maintOk = false;
     let maintSeq = "";
-    const GAME_DURATION = MAINT ? 1000 : 60000;
+    const BASE_GAME_DURATION = MAINT ? 1000 : 60000;
+    let gameDuration = BASE_GAME_DURATION;
     const GUEST_ICON_URL = "https://upload.wikimedia.org/wikipedia/commons/d/d7/VK_icons_user_square_outline_56.svg";
-    const GOOGLE_ICON_URL = 'https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg';
+    const GOOGLE_ICON_URL = "https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg";
     const BALLOON_ICON_URL = "https://kimseyeong2014.github.io/무지개 풍선.svg";
-    const YOUTUBE_ICON_URL = "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_(2017).svg";
+    const DEVELOPER_ICON_URL = "https://upload.wikimedia.org/wikipedia/commons/3/3a/GDevs.svg";
 
     const SHOP = {
         nameColors: [
-            { id: "black", label: "검은 이름", price: 0, color: "black" },
-            { id: "red",     label: "빨간 이름", price: 1000000, color: "red" },
-            { id: "orange",label: "주황 이름", price: 1000000, color: "orange" },
-            { id: "yellow",label: "노란 이름", price: 1000000, color: "gold" },
-            { id: "green", label: "초록 이름", price: 1000000, color: "green" },
-            { id: "sky",     label: "하늘 이름", price: 1000000, color: "deepskyblue" },
-            { id: "blue",    label: "파란 이름", price: 1000000, color: "blue" },
-            { id: "purple",label: "보라 이름", price: 1000000, color: "purple" },
+            { id: "black", label: "검은색 이름", price: 0, color: "black" },
+            { id: "red", label: "빨간색 이름", price: 100000000, color: "red" },
+            { id: "orange", label: "주황색 이름", price: 100000000, color: "orange" },
+            { id: "yellow", label: "노란색 이름", price: 100000000, color: "gold" },
+            { id: "green", label: "초록색 이름", price: 100000000, color: "green" },
+            { id: "blue", label: "파란색 이름", price: 100000000, color: "deepskyblue" },
+            { id: "indigo", label: "남색 이름", price: 100000000, color: "blue" },
+            { id: "purple", label: "보라색 이름", price: 100000000, color: "purple" },
         ],
         icons: [
+            { id: "general", label: "일반 아이콘", price: 0, url: GUEST_ICON_URL },
+            { id: "balloon", label: "풍선 터트리기 아이콘", price: 0, url: BALLOON_ICON_URL },
             { id: "google", label: "구글 아이콘", price: 0, url: GOOGLE_ICON_URL },
-            { id: "balloon", label: "풍선 아이콘", price: 0, url: BALLOON_ICON_URL },
-            { id: "youtube", label: "유튜브 아이콘", price: 2000000, url: YOUTUBE_ICON_URL },
+            { id: "developer", label: "관리자 아이콘", price: 0, url: DEVELOPER_ICON_URL }
         ],
         items: [
-            { id: "spawn2", label: "풍선 2배로", price: 100000000, mult: 2 },
-            { id: "spawn3", label: "풍선 3배로", price: 200000000, mult: 3 },
+            { id: "spawn1.2", label: "풍선 수 1.2배", price: 100000000, type: "spawn", mult: 1.2 },
+            { id: "time10",  label: "10초 늘리기", price: 100000000, type: "time", addMs: 10000 },
         ]
     };
 
@@ -531,7 +630,7 @@
     }
 
     function spawnLogic(now, elapsedSec) {
-        const mult = user && profile?.spawnMult ? profile.spawnMult : 1;
+        const mult = spawnMult || 1;
         const spawnInterval = Math.max(250, (1000 - (elapsedSec * 15)) / mult);
         if (now - lastSpawnTime > spawnInterval) {
             const duration = Math.max(500, 2000 - (elapsedSec * 25));
@@ -553,32 +652,17 @@
             const weekKey = getWeekKey();
             const uid = user?.uid || null;
 
-            if (uid) {
-                const qOld = query(
-                    collection(db, "scores"),
-                    where("uid", "==", uid),
-                    limit(50)
-                );
-                const oldSnap = await getDocs(qOld);
-                for (const d of oldSnap.docs) {
-                    const data = d.data();
-                    if (data.week === weekKey) {
-                        await deleteDoc(d.ref);
-                    }
-                }
-            }
-
-            const iconUrl = uid ? (profile?.iconUrl || GOOGLE_ICON_URL) : null;
+            const iconUrl = uid ? (profile?.iconUrl ?? null) : null;
             const nameColor = uid ? (profile?.equippedNameColor || profile?.nameColor || "black") : "black";
 
             await addDoc(collection(db, "scores"), {
-                name: name,
-                score: score,
+                name,
+                score,
                 time: Date.now(),
                 week: weekKey,
-                uid: uid,
-                iconUrl: iconUrl,
-                nameColor: nameColor,
+                uid,
+                iconUrl,
+                nameColor,
             });
         } catch (e) {
             console.error(e);
@@ -596,14 +680,15 @@
         );
         const snap = await getDocs(q);
         let arr = [];
-        snap.forEach(doc => arr.push(doc.data()));
+        snap.forEach(d => arr.push({ id: d.id, ref: d.ref, ...d.data() }));
         return arr;
     }
+
 
     function refreshRanking() {
         rankingLoading = true;
 
-        Promise.all([loadRanking(), refreshMyBestThisWeek()])
+        Promise.all([loadRanking(), refreshMyBestThisWeek(), refreshMyDocsThisWeek()])
           .then(([list]) => {
               rankingCache = list;
               rankingLoading = false;
@@ -673,6 +758,24 @@
             }
         }
     }
+    async function refreshMyDocsThisWeek() {
+        myScoreDocsThisWeek = [];
+        if (!user?.uid) return;
+
+        const weekKey = getWeekKey();
+        const qMine = query(
+            collection(db, "scores"),
+            where("uid", "==", user.uid),
+            limit(50)
+        );
+        const snap = await getDocs(qMine);
+        for (const d of snap.docs) {
+            const data = d.data();
+            if (data.week === weekKey) {
+                myScoreDocsThisWeek.push({ id: d.id, ref: d.ref, data });
+            }
+        }
+    }
     const iconCache = new Map();
     function getIconImage(url) {
         if (!url) return null;
@@ -739,10 +842,9 @@
                 nameColor: "black",
                 ownedNameColors: ["black"],
                 equippedNameColor: "black",
-                ownedIcons: ["google", "balloon"],
+                ownedIcons: ["google"],
                 equippedIcon: "google",
                 ownedItems: [],
-                spawnMult: 1,
             };
             await setDoc(ref, data);
             profile = { uid, ...data };
@@ -757,19 +859,17 @@
                 nameColor: data.nameColor || "black",
                 ownedNameColors: Array.isArray(data.ownedNameColors) ? data.ownedNameColors : ["black"],
                 equippedNameColor: data.equippedNameColor || (data.nameColor || "black"),
-                ownedIcons: Array.isArray(data.ownedIcons) ? data.ownedIcons : ["google", "balloon"],
+                ownedIcons: Array.isArray(data.ownedIcons) ? data.ownedIcons : ["google"],
                 equippedIcon: data.equippedIcon || "google",
                 ownedItems: Array.isArray(data.ownedItems) ? data.ownedItems : [],
-                spawnMult: Number.isFinite(data.spawnMult) ? data.spawnMult : 1,
             };
             const patch = {};
             if (!("nameColor" in data)) patch.nameColor = "black";
             if (!("ownedNameColors" in data)) patch.ownedNameColors = ["black"];
             if (!("equippedNameColor" in data)) patch.equippedNameColor = patch.nameColor || "black";
-            if (!("ownedIcons" in data)) patch.ownedIcons = ["google", "balloon"];
+            if (!("ownedIcons" in data)) patch.ownedIcons = ["google"];
             if (!("equippedIcon" in data)) patch.equippedIcon = "google";
             if (!("ownedItems" in data)) patch.ownedItems = [];
-            if (!("spawnMult" in data)) patch.spawnMult = 1;
             if (Object.keys(patch).length) await updateDoc(ref, patch);
             return profile;
         }
@@ -827,11 +927,15 @@
             }
 
             nameBtn.classList.remove("hidden");
+            refreshRanking();
         } else {
             googleBtn.textContent = "구글 로그인";
             googleBtn.classList.remove("logout");
             nameBtn.classList.add("hidden");
             profile = null;
+
+            myScoreDocsThisWeek = [];
+            refreshRanking();
         }
     });
 
@@ -865,6 +969,18 @@
         startCountdownValue = 3;
         hasSubmittedRank = false;
         coinsCredited = false;
+        renderShop();
+        gameDuration = BASE_GAME_DURATION;
+        spawnMult = 1;
+        if (usedItemThisRound && user && profile) {
+            const it = SHOP.items.find(x => x.id === usedItemThisRound);
+            if (it?.type === "time") {
+                gameDuration += (it.addMs || 0);
+            }
+            if (it?.type === "spawn") {
+                spawnMult = it.mult || 1;
+            }
+        }
 
         readySound.currentTime = 0;
         readySound.play();
@@ -895,6 +1011,9 @@
         isStarting = false;
         isShowingResult = false;
         isShowingRanking = false;
+        spawnMult = 1;
+        usedItemThisRound = null;
+        renderShop();
 
         startBtn.classList.remove('hidden');
         gameTitle.classList.remove('hidden');
@@ -930,9 +1049,12 @@
                 rankBtn.classList.remove('hidden');
                 showResultBtn.classList.remove('hidden');
                 googleBtn.classList.remove('hidden');
+                shopBtn.classList.remove('hidden');
                 if (user) nameBtn.classList.remove('hidden');
                 else nameBtn.classList.add('hidden');
-                shopBtn.classList.add('hidden');
+                spawnMult = 1;
+                usedItemThisRound = null;
+                renderShop();
 
                 rankingLoading = true;
                 loadRanking().then(list => {
@@ -968,13 +1090,21 @@
 
         if (isShowingRanking) {
             const overlay = document.getElementById("ui-overlay");
-            overlay.style.display = (nameInputMode === "rank" || nameInputMode === "result") ? "flex" : "none";
+
+            if (nameInputMode === "rank" || nameInputMode === "result") {
+                overlay.style.display = "flex";
+                overlay.classList.add("only-input", "rank-input");
+            } else {
+                overlay.style.display = "none";
+                overlay.classList.remove("only-input", "rank-input");
+            }
+
             ctx.fillStyle = "rgba(0,0,0,0.6)";
             ctx.fillRect(0,0,canvas.width,canvas.height);
 
             ctx.fillStyle = "white";
             ctx.beginPath();
-            ctx.roundRect(200,80,400,440,16);
+            ctx.roundRect(140,80,520,440,16);
             ctx.fill();
 
             ctx.fillStyle = "black";
@@ -986,7 +1116,7 @@
                 ctx.font = "20px Arial";
                 ctx.textBaseline = "middle";
 
-                const baseX = 260;
+                const baseX = 200;
                 const iconSize = 24;
 
                 for (let i = 0; i < rankingCache.length; i++) {
@@ -995,12 +1125,13 @@
 
                     ctx.textAlign = "left";
                     ctx.fillStyle = "black";
-                    ctx.fillText(`${i + 1}.`, baseX - 30, y);
+                    ctx.fillText(`${i + 1}. `, baseX - 30, y);
 
                     const iconUrl = r.iconUrl || GUEST_ICON_URL;
                     const img = getIconImage(iconUrl);
                     if (img?.complete) {
-                        ctx.drawImage(img, baseX, y - iconSize / 2 - 1, iconSize, iconSize);
+                        const drawHeight = iconSize * img.height / img.width;
+                        ctx.drawImage(img, baseX, y - drawHeight / 2 - 2, iconSize, drawHeight);
                     }
 
                     const colorId = r.nameColor || "black";
@@ -1014,23 +1145,26 @@
 
                     ctx.textAlign = "right";
                     ctx.fillStyle = "black";
-                    ctx.fillText(`${r.score}점`, 570, y);
+                    ctx.fillText(`${r.score}점`, 630, y);
                 }
 
                 ctx.textAlign = "center";
                 ctx.textBaseline = "alphabetic";
             }
 
-            if (!rankingCache || hasSubmittedRank || startTime === 0) {
-                submitRankBtn.classList.add('hidden');
-            } else {
-                const canEnter =
-                  rankingCache.length < 10 ||
-                  score > rankingCache[rankingCache.length - 1].score;
-                const beatsMyBest = !user ? true : (score > (Number.isFinite(myBestThisWeek) ? myBestThisWeek : -Infinity));
+            const hasMine =
+                !!user?.uid &&
+                Array.isArray(myScoreDocsThisWeek) &&
+                myScoreDocsThisWeek.length > 0;
 
-                submitRankBtn.classList.toggle('hidden', !canEnter || !beatsMyBest || nameInputMode === "rank");
-            }
+            const canEnter =
+                !!rankingCache &&
+                startTime !== 0 &&
+                !hasSubmittedRank &&
+                (rankingCache.length < 10 || score > rankingCache[rankingCache.length - 1].score);
+
+            submitRankBtn.classList.toggle("hidden", !canEnter || nameInputMode === "rank");
+
             requestAnimationFrame(update);
             return;
         }
@@ -1060,13 +1194,13 @@
 
             ctx.fillStyle = "black";
             ctx.font = "30px Arial";
-            ctx.fillText(`0점 | ${GAME_DURATION / 1000}초`, canvas.width / 2, 40);
+            ctx.fillText(`0점 | ${gameDuration / 1000}초`, canvas.width / 2, 40);
         }
         else if (isGameRunning) {
             const elapsedTotal = now - startTime;
-            const remTime = Math.max(0, (GAME_DURATION - elapsedTotal) / 1000);
+            const remTime = Math.max(0, (gameDuration - elapsedTotal) / 1000);
             if (remTime > 0) {
-                spawnLogic(now, (GAME_DURATION/1000) - remTime);
+                spawnLogic(now, (gameDuration / 1000) - remTime);
             } else {
                 handleGameOver();
             }
@@ -1163,6 +1297,7 @@
             nameInputBox.classList.add("hidden");
             submitRankBtn.classList.add("hidden");
             showResultBtn.classList.remove("hidden");
+            document.getElementById("ui-overlay").style.display = "flex";
         }
         if (nameInputMode === "result") {
             nameInputBox.classList.add("hidden");
@@ -1179,6 +1314,7 @@
             endButtons.classList.remove('hidden');
             rankBtn.classList.remove('hidden');
             googleBtn.classList.remove("hidden");
+            shopBtn.classList.remove('hidden');
             if (user) nameBtn.classList.remove('hidden');
             else nameBtn.classList.add('hidden');
             document.getElementById("tipText").style.display = "block";
@@ -1264,6 +1400,9 @@
         const ok = await spendCoins(it.price);
         if (!ok) return;
 
+        shopBuySound.currentTime = 0;
+        shopBuySound.play();
+
         profile.ownedNameColors.push(id);
         await updateDoc(userDocRef(user.uid), {
             ownedNameColors: profile.ownedNameColors,
@@ -1276,6 +1415,9 @@
     async function useNameColor(id) {
         if (!user?.uid || !profile) return;
         if (!isOwned(profile.ownedNameColors, id)) return;
+
+        shopUseSound.currentTime = 0;
+        shopUseSound.play();
 
         profile.equippedNameColor = id;
         profile.nameColor = id;
@@ -1299,6 +1441,9 @@
         const ok = await spendCoins(it.price);
         if (!ok) return;
 
+        shopBuySound.currentTime = 0;
+        shopBuySound.play();
+
         profile.ownedIcons.push(id);
         await updateDoc(userDocRef(user.uid), {
             ownedIcons: profile.ownedIcons,
@@ -1312,6 +1457,9 @@
         const it = SHOP.icons.find(x => x.id === id);
         if (!it || !user?.uid || !profile) return;
         if (!isOwned(profile.ownedIcons, id)) return;
+
+        shopUseSound.currentTime = 0;
+        shopUseSound.play();
 
         profile.equippedIcon = id;
         profile.iconUrl = it.url;
@@ -1335,25 +1483,23 @@
         const ok = await spendCoins(it.price);
         if (!ok) return;
 
-        profile.ownedItems.push(id);
+        shopBuySound.currentTime = 0;
+        shopBuySound.play();
 
-        const nextMult = Math.max(profile.spawnMult || 1, it.mult);
-        profile.spawnMult = nextMult;
+        profile.ownedItems.push(id);
+        renderShop();
 
         await updateDoc(userDocRef(user.uid), {
             ownedItems: profile.ownedItems,
-            spawnMult: nextMult,
             updatedAt: Date.now(),
         });
-
-        renderShop();
     }
 
     function renderShop() {
         updateShopCoins();
 
         if (!user || !profile) {
-            shopContent.innerHTML = `<div style="padding:16px;font-size:20px;">로그인하면 상점을 사용할 수 있어요.</div>`;
+            shopContent.innerHTML = `<div style="padding:16px;font-size:20px;">로그인해야 상점이 생겨요.</div>`;
             return;
         }
 
@@ -1362,7 +1508,7 @@
                 const owned = isOwned(profile.ownedNameColors, it.id);
                 const using = (profile.equippedNameColor || "black") === it.id;
 
-                const priceText = it.price === 0 ? "무료" : `${fmtCoins(it.price)}ⓒ`;
+                const priceText = it.price === 0 ? "무료" : `${fmtCoins(it.price)} ⓒ`;
 
                 return `
                     <div class="shop-row">
@@ -1371,8 +1517,8 @@
                             <span class="shop-badge">${priceText}</span>
                         </div>
                         <div class="shop-actions">
-                            ${!owned ? `<button class="shop-mini buy" ${profile.coins < it.price ? "disabled" : ""} data-buy-name="${it.id}">사기</button>` : ""}
-                            ${owned ? `<button class="shop-mini ${using ? "using" : "use"}" data-use-name="${it.id}">${using ? "씀" : "쓰기"}</button>` : ""}
+                            ${!owned ? `<button class="shop-mini buy" ${profile.coins < it.price ? "disabled" : ""} data-buy-name="${it.id}">구매</button>` : ""}
+                            ${owned ? `<button class="shop-mini ${using ? "using" : "use"}" data-use-name="${it.id}">${using ? "사용 중" : "사용"}</button>` : ""}
                         </div>
                     </div>
                 `;
@@ -1384,7 +1530,7 @@
                 const owned = isOwned(profile.ownedIcons, it.id);
                 const using = (profile.equippedIcon || "google") === it.id;
 
-                const priceText = it.price === 0 ? "무료" : `${fmtCoins(it.price)}ⓒ`;
+                const priceText = it.price === 0 ? "무료" : `${fmtCoins(it.price)} ⓒ`;
 
                 return `
                     <div class="shop-row">
@@ -1394,8 +1540,8 @@
                             <span class="shop-badge">${priceText}</span>
                         </div>
                         <div class="shop-actions">
-                            ${!owned ? `<button class="shop-mini buy" ${profile.coins < it.price ? "disabled" : ""} data-buy-icon="${it.id}">사기</button>` : ""}
-                            ${owned ? `<button class="shop-mini ${using ? "using" : "use"}" data-use-icon="${it.id}">${using ? "씀" : "쓰기"}</button>` : ""}
+                            ${!owned && it.id !== "developer" ? `<button class="shop-mini buy" ${profile.coins < it.price ? "disabled" : ""} data-buy-icon="${it.id}">구매</button>` : ""}
+                            ${owned ? `<button class="shop-mini ${using ? "using" : "use"}" data-use-icon="${it.id}">${using ? "사용 중" : "사용"}</button>` : ""}
                         </div>
                     </div>
                 `;
@@ -1405,7 +1551,8 @@
         if (shopTab === "item") {
             shopContent.innerHTML = SHOP.items.map(it => {
                 const owned = isOwned(profile.ownedItems, it.id);
-                const priceText = `${fmtCoins(it.price)}ⓒ`;
+                const priceText = `${fmtCoins(it.price)} ⓒ`;
+                const usingNow = (usedItemThisRound === it.id);
 
                 return `
                     <div class="shop-row">
@@ -1414,7 +1561,8 @@
                             <span class="shop-badge">${priceText}</span>
                         </div>
                         <div class="shop-actions">
-                            ${!owned ? `<button class="shop-mini buy" ${profile.coins < it.price ? "disabled" : ""} data-buy-item="${it.id}">사기</button>` : `<span class="shop-badge">적용됨</span>`}
+                            ${!owned ? `<button class="shop-mini buy" ${profile.coins < it.price ? "disabled" : ""} data-buy-item="${it.id}">구매</button>`
+                            : `<button class="shop-mini ${usingNow ? "using" : "use"}" data-use-item="${it.id}">${usingNow ? "사용 중" : "사용"}</button>`}
                         </div>
                     </div>
                 `;
@@ -1424,6 +1572,8 @@
 
     document.querySelectorAll(".shop-tab").forEach(btn => {
         btn.addEventListener("click", () => {
+            shopTabSound.currentTime = 0;
+            shopTabSound.play();
             document.querySelectorAll(".shop-tab").forEach(b => b.classList.remove("active"));
             btn.classList.add("active");
             shopTab = btn.dataset.tab;
@@ -1442,7 +1592,34 @@
         if (t.dataset.useIcon) await useIcon(t.dataset.useIcon);
 
         if (t.dataset.buyItem) await buyItem(t.dataset.buyItem);
+        if (t.dataset.useItem) await useTempItem(t.dataset.useItem);
     });
+
+    async function useTempItem(id) {
+        if (!user?.uid || !profile) return;
+        if (!isOwned(profile.ownedItems, id)) return;
+        if (isGameRunning || isStarting || isCountingDown) return;
+
+        shopUseSound.currentTime = 0;
+        shopUseSound.play();
+
+        if (usedItemThisRound === id) {
+            usedItemThisRound = null;
+            spawnMult = 1;
+            gameDuration = BASE_GAME_DURATION;
+            renderShop();
+            return;
+        }
+
+        const it = SHOP.items.find(x => x.id === id);
+        if (!it) return;
+
+        usedItemThisRound = id;
+        if (it.type === "spawn") {
+            spawnMult = it.mult;
+        }
+        renderShop();
+    }
 
     function closeNameInput() {
         nameInputBox.classList.add("hidden");
@@ -1460,10 +1637,9 @@
         nameInput.value = profile?.name || getAutoName() || "";
         nameInputBox.classList.remove("rank-mode");
         nameInputBox.classList.remove("hidden");
+        document.getElementById("nameInputLabel").textContent = "이름:";
 
         const overlay = document.getElementById("ui-overlay");
-        overlay.classList.add("only-input");
-        overlay.classList.remove("rank-input");
 
         nameInputBox.classList.add("rename-mode");
         nameInputBox.classList.remove("rank-mode");
@@ -1492,6 +1668,7 @@
         nameInput.value = "";
         nameError.textContent = "";
         submitRankBtn.classList.add("hidden");
+        document.getElementById("nameInputLabel").textContent = "이름:";
 
         const overlay = document.getElementById("ui-overlay");
         overlay.classList.add("only-input", "rank-input");
@@ -1512,6 +1689,7 @@
             downloadBtn.classList.remove("hidden");
             rankBtn.classList.add("hidden");
             googleBtn.classList.add("hidden");
+            shopBtn.classList.add('hidden');
             nameBtn.classList.add('hidden');
             homeBtn.textContent = "앞으로";
             document.getElementById("tipText").style.display = "none";
@@ -1525,6 +1703,7 @@
         nameInputBox.classList.remove("rank-mode");
         nameInputBox.classList.remove("hidden");
         showResultBtn.classList.add("hidden");
+        document.getElementById("nameInputLabel").textContent = "이름:";
     };
 
     nameOkBtn.onclick = async () => {
@@ -1534,19 +1713,23 @@
             return;
         }
         if (!/^[ -~ㄱ-ㆎ가-힣ᄀ-ᇿힰ-ퟻꥠ-ꥼ]+$/.test(name)) {
-            nameError.textContent = "한글과 아스키만 돼요";
+            nameError.textContent = "못 쓰는 문자가 있어요";
+            return;
+        }
+        if (BAD.test(name)) {
+            nameError.textContent = "나쁜 말은 못 써요";
             return;
         }
 
         if (nameInputMode === "rename") {
             if (!user) {
-                nameError.textContent = "로그인 필요";
+                nameError.textContent = "로그인해야 해요";
                 return;
             }
             try {
                 await setProfileName(name);
             } catch (e) {
-                nameError.textContent = "이름 저장 실패";
+                nameError.textContent = "이름 저장에 실패했어요";
                 return;
             }
 
@@ -1567,6 +1750,7 @@
             endButtons.classList.add("hidden");
             downloadBtn.classList.remove("hidden");
             rankBtn.classList.add("hidden");
+            shopBtn.classList.add("hidden");
             homeBtn.textContent = "앞으로";
             document.getElementById("tipText").style.display = "none";
         }
@@ -1592,7 +1776,36 @@
     const adModal = document.getElementById('adModal');
     const closeAdBtn = document.getElementById('closeAdBtn');
 
-    startBtn.onclick = startGame;
+    function showAdAndStart() {
+        if (!document.querySelector('.kakao_ad_area iframe')) {
+            startGame();
+            return;
+        }
+
+        adModal.classList.add('show');
+
+        let remain = 3;
+        closeAdBtn.disabled = true;
+        closeAdBtn.textContent = remain;
+
+        const adTimer = setInterval(() => {
+            remain--;
+            if (remain > 0) {
+                closeAdBtn.textContent = remain;
+            } else {
+                clearInterval(adTimer);
+                closeAdBtn.disabled = false;
+                closeAdBtn.textContent = '✕';
+            }
+        }, 1000);
+
+        closeAdBtn.onclick = () => {
+            if (closeAdBtn.disabled) return;
+            adModal.classList.remove('show');
+            startGame();
+        };
+    }
+    startBtn.onclick = showAdAndStart;
 
     window.addEventListener("keydown", (e) => {
         if (!MAINT || maintOk) return;
